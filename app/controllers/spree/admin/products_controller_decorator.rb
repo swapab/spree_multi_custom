@@ -16,6 +16,8 @@ Spree::Admin::ProductsController.class_eval do
     super
     if current_user.has_role?('admin') && (params[:product].key? :store_ids)
       @product.store_ids = params[:product][:store_ids]
+    elsif current_user.has_role?('client_admin') && current_store
+      @product.store_ids = current_store.id
     end
     @product.save
   end

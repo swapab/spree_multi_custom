@@ -12,6 +12,14 @@ Spree::Admin::ProductsController.class_eval do
     @product.save
   end
 
+  def update
+    super
+    if current_user.has_role?('admin') && (params[:product].key? :store_ids)
+      @product.store_ids = params[:product][:store_ids]
+    end
+    @product.save
+  end
+
   private
   def set_stores
     @product.store_ids = nil unless params[:product].key? :store_ids
